@@ -15,8 +15,8 @@
  */
 
 plugins {
-    id("com.gradle.build-scan") version "2.1"
-    id("me.champeau.buildscan-recipes") version "0.2.3"
+//    id("com.gradle.build-scan") version "2.1"
+//    id("me.champeau.buildscan-recipes") version "0.2.3"
     id("com.jfrog.bintray") version "1.8.0"
     id("com.jfrog.artifactory") version "4.6.0"
     id("com.github.hierynomus.license") version "0.14.0"
@@ -34,12 +34,12 @@ plugins {
 
 kotlinDslPluginOptions.experimentalWarning.set(false)
 
-buildScan {
-    termsOfServiceUrl = "https://gradle.com/terms-of-service"
-    termsOfServiceAgree = "yes"
-
-    publishAlways()
-}
+//buildScan {
+//    termsOfServiceUrl = "https://gradle.com/terms-of-service"
+//    termsOfServiceAgree = "yes"
+//
+//    publishAlways()
+//}
 
 allprojects {
     repositories {
@@ -48,10 +48,10 @@ allprojects {
     }
 }
 
-buildScanRecipes {
-    recipes("git-status", "travis-ci")
-    recipe(mapOf("baseUrl" to "https://github.com/melix/jmh-gradle-plugin/tree"), "git-commit")
-}
+//buildScanRecipes {
+//    recipes("git-status", "travis-ci")
+//    recipe(mapOf("baseUrl" to "https://github.com/melix/jmh-gradle-plugin/tree"), "git-commit")
+//}
 
 apply(from="gradle/credentials.gradle")
 apply(from="gradle/compile.gradle")

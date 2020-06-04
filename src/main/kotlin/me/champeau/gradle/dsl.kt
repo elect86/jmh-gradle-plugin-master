@@ -1,12 +1,14 @@
 package me.champeau.gradle
 
 //import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import org.gradle.api.Project
+import org.gradle.api.*
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.java.archives.Attributes
 import org.gradle.api.plugins.ExtensionContainer
 import org.gradle.api.plugins.ExtraPropertiesExtension
+import org.gradle.api.plugins.PluginContainer
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.TaskContainer
@@ -31,9 +33,12 @@ val SourceSetContainer.jmh: SourceSet
 fun SourceSetContainer.jmh(block: SourceSet.() -> Unit) =
         jmh.block()
 
+operator fun TaskContainer.invoke(block: TaskContainer.() -> Unit) = block()
 
 val TaskContainer.jmhJar: Jar
     get() = (findByName(Jmh.jarTaskName) ?: create(Jmh.jarTaskName, Jar::class.java)) as Jar
+
+fun TaskContainer.jmhJar(block: Jar.() -> Unit) = jmhJar.block()
 
 //fun TaskContainer.jmhJar(block: Jar.() -> Unit) =
 //    jmhJar.block()
@@ -138,3 +143,19 @@ var ExtraPropertiesExtension.jmhLastAddedTask: AtomicReference<JmhTask>
         else -> AtomicReference<JmhTask>()
     }
     set(value) = set("jmhLastAddedTask", value)
+
+
+operator fun <T>Property<T>.invoke(): T = get()
+operator fun <T>Property<T>.invoke(value: T?) = set(value)
+
+//inline operator fun <reified S : Task> DomainObjectCollection<S>.invoke(configureAction: Action<in S>) =
+//        withType(S::class.java, configureAction)
+
+inline operator fun <reified S : Task> TaskContainer.invoke(configureAction: Action<in S>): DomainObjectCollection<S> =
+        withType(S::class.java, configureAction)
+
+inline fun <reified P : Plugin<Project>> PluginContainer.find(): P? =
+        findPlugin(P::class.java)
+
+inline fun <reified E> ExtensionContainer.get(): E =
+        getByType(E::class.java)

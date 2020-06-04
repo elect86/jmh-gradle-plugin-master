@@ -17,6 +17,7 @@
 sourceSets {
     functionalTest {
         groovy.srcDir file('src/funcTest/groovy')
+        kotlin.srcDir file('src/funcTest/kotlin')
         resources.srcDir file('src/funcTest/resources')
         compileClasspath += sourceSets.main.output + configurations.testRuntimeClasspath
         runtimeClasspath += output + compileClasspath
@@ -31,13 +32,17 @@ task createClasspathManifest {
 
     doLast {
         outputDir.mkdirs()
-        file("$outputDir/plugin-classpath.txt").text = files(sourceSets.test.runtimeClasspath, jar.archivePath).join("\n")
+        file("$outputDir/plugin-classpath.txt").text = files(sourceSets.test.runtimeClasspath, jar.archiveFile).join("\n")
     }
 }
 
 dependencies {
     functionalTestImplementation gradleTestKit()
     functionalTestImplementation files(createClasspathManifest)
+
+    functionalTestImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    functionalTestImplementation "org.jetbrains.kotlin:kotlin-test"
+    functionalTestImplementation "org.jetbrains.kotlin:kotlin-test-junit"
 }
 
 compileFunctionalTestJava.dependsOn createClasspathManifest
