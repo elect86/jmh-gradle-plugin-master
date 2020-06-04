@@ -108,7 +108,7 @@ class JMHPluginTest {
         project.apply plugin: 'me.champeau.gradle.jmh'
 
         project.tasks.find { it.name.startsWith('jmh') }.each {
-            assert it.group == JMHPlugin.JMH_GROUP
+            assert it.group == JmhPlugin.JMH_GROUP
         }
     }
 

@@ -38,7 +38,7 @@ import java.util.concurrent.atomic.AtomicReference
 /**
  * Configures the JMH Plugin.
  */
-class JMHPlugin implements Plugin<Project> {
+class JmhPlugin implements Plugin<Project> {
     private static boolean IS_GRADLE_MIN_55 = GradleVersion.current().compareTo(GradleVersion.version("5.5.0")) >= 0
 
     public static final String JMH_CORE_DEPENDENCY = 'org.openjdk.jmh:jmh-core:'
@@ -57,6 +57,7 @@ class JMHPlugin implements Plugin<Project> {
         final JmhPluginExtension extension = project.extensions.create(JMH_NAME, JmhPluginExtension, project)
         final Configuration configuration = project.configurations.create(JMH_NAME)
         final Configuration runtimeConfiguration = createJmhRuntimeConfiguration(project, extension)
+        println runtimeConfiguration.files.size()
 
         DependencyHandler dependencyHandler = project.getDependencies()
         configuration.withDependencies {dependencies ->
@@ -186,7 +187,7 @@ class JMHPlugin implements Plugin<Project> {
     }
 
     private void createShadowJmhJar(Project project, JmhPluginExtension extension, File jmhGeneratedResourcesDir, File jmhGeneratedClassesDir, List<String> metaInfExcludes, Configuration runtimeConfiguration) {
-        createTask(project, JMH_JAR_TASK_NAME, Class.forName('com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar', true, JMHPlugin.classLoader)) {
+        createTask(project, JMH_JAR_TASK_NAME, Class.forName('com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar', true, JmhPlugin.classLoader)) {
             it.group = JMH_GROUP
             it.dependsOn(JMH_TASK_COMPILE_GENERATED_CLASSES_NAME)
             it.description = 'Create a combined JAR of project and runtime dependencies'
