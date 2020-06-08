@@ -16,7 +16,7 @@ open class JmhPluginExtension(
     val includeTests: Property<Boolean> = project.objects.property(Boolean::class.java)
 
     init {
-        includeTests.set(true)
+        includeTests(true)
     }
 
     var include: List<String> = ArrayList()
@@ -134,8 +134,8 @@ open class JmhPluginExtension(
     private fun parseResultFormat(): String = ResultFormatType.translate(resultFormat!!)
 
     var isIncludeTests: Boolean
-        get() = includeTests.get()
-        set(includeTests) = this.includeTests.set(includeTests)
+        get() = includeTests()
+        set(includeTests) = this.includeTests(includeTests)
 
     private enum class ResultFormatType(private val extension: String) {
         TEXT("txt"), CSV("csv"), SCSV("scsv"), JSON("json"), LATEX("tex");

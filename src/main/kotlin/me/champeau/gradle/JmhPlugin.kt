@@ -207,7 +207,7 @@ open class JmhPlugin : Plugin<Project> {
             override fun buildStarted(gradle: Gradle) = println("buildStarted")
             override fun projectsEvaluated(gradle: Gradle) {
                 println("projectsEvaluated")
-                if (extension.includeTests.get())
+                if (extension.includeTests())
                     project.sourceSets {
                         jmh {
                             compileClasspath += test.output + project.configurations.testCompileClasspath
