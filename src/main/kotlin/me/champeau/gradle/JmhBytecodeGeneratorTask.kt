@@ -107,6 +107,7 @@ abstract class JmhBytecodeGeneratorWorker @Inject constructor() : WorkAction<Jmh
             for ((compiledBytecodeDirectory, classes) in allClasses) {
                 var source: GeneratorSource? = null
                 if (generatorType.equals(JmhBytecodeGenerator.GENERATOR_TYPE_ASM, ignoreCase = true)) {
+                    println("a")
                     val src = ASMGeneratorSource()
                     try {
                         src.processClasses(classes)
@@ -115,6 +116,7 @@ abstract class JmhBytecodeGeneratorWorker @Inject constructor() : WorkAction<Jmh
                     }
                     source = src
                 } else if (generatorType.equals(JmhBytecodeGenerator.GENERATOR_TYPE_REFLECTION, ignoreCase = true)) {
+                    println("b")
                     val src = RFGeneratorSource()
                     for (f in classes) {
                         var name = f.absolutePath.substring(compiledBytecodeDirectory.absolutePath.length + 1)
@@ -129,6 +131,7 @@ abstract class JmhBytecodeGeneratorWorker @Inject constructor() : WorkAction<Jmh
                     }
                     source = src
                 }
+                println("c")
                 val gen = BenchmarkGenerator()
                 gen.generate(source, destination)
                 gen.complete(source, destination)

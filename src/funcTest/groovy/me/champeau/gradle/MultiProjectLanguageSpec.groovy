@@ -15,44 +15,44 @@
  */
 package me.champeau.gradle
 
-import org.gradle.testkit.runner.BuildResult
-import org.gradle.testkit.runner.BuildTask
-import org.gradle.testkit.runner.GradleRunner
-import org.gradle.testkit.runner.TaskOutcome
-import spock.lang.Specification
-import spock.lang.Unroll
-
-@Unroll
-class MultiProjectLanguageSpec extends Specification {
-    def "Should not execute JMH tests from different projects concurrently"() {
-        given:
-        File projectDir = new File("src/funcTest/resources/java-multi-project")
-        def pluginClasspathResource = getClass().classLoader.getResourceAsStream("plugin-classpath.txt")
-        if (pluginClasspathResource == null) {
-            throw new IllegalStateException("Did not find plugin classpath resource, run `testClasses` build task.")
-        }
-        List<File> pluginClasspath = pluginClasspathResource.readLines().collect { new File(it) }
-
-        BuildResult project = GradleRunner.create()
-            .withProjectDir(projectDir)
-            .withPluginClasspath(pluginClasspath)
-            .withArguments('-S', "clean", "jmh")
-            .build();
-
-        when:
-        BuildTask taskResult = project.task(":jmh");
-        String benchmarkResults = new File(projectDir, "build/reports/benchmarks.csv").text
-
-        then:
-        taskResult.outcome == TaskOutcome.SUCCESS
-        benchmarkResults.contains("JavaBenchmark.sqrtBenchmark")
-
-        when:
-        taskResult = project.task(":subproject:jmh");
-        benchmarkResults = new File(projectDir, "subproject/build/reports/benchmarks.csv").text
-
-        then:
-        taskResult.outcome == TaskOutcome.SUCCESS
-        benchmarkResults.contains("JavaMultiBenchmark.sqrtBenchmark")
-    }
-}
+//import org.gradle.testkit.runner.BuildResult
+//import org.gradle.testkit.runner.BuildTask
+//import org.gradle.testkit.runner.GradleRunner
+//import org.gradle.testkit.runner.TaskOutcome
+//import spock.lang.Specification
+//import spock.lang.Unroll
+//
+//@Unroll
+//class MultiProjectLanguageSpec extends Specification {
+//    def "Should not execute JMH tests from different projects concurrently"() {
+//        given:
+//        File projectDir = new File("src/funcTest/resources/java-multi-project")
+//        def pluginClasspathResource = getClass().classLoader.getResourceAsStream("plugin-classpath.txt")
+//        if (pluginClasspathResource == null) {
+//            throw new IllegalStateException("Did not find plugin classpath resource, run `testClasses` build task.")
+//        }
+//        List<File> pluginClasspath = pluginClasspathResource.readLines().collect { new File(it) }
+//
+//        BuildResult project = GradleRunner.create()
+//            .withProjectDir(projectDir)
+//            .withPluginClasspath(pluginClasspath)
+//            .withArguments('-S', "clean", "jmh")
+//            .build();
+//
+//        when:
+//        BuildTask taskResult = project.task(":jmh");
+//        String benchmarkResults = new File(projectDir, "build/reports/benchmarks.csv").text
+//
+//        then:
+//        taskResult.outcome == TaskOutcome.SUCCESS
+//        benchmarkResults.contains("JavaBenchmark.sqrtBenchmark")
+//
+//        when:
+//        taskResult = project.task(":subproject:jmh");
+//        benchmarkResults = new File(projectDir, "subproject/build/reports/benchmarks.csv").text
+//
+//        then:
+//        taskResult.outcome == TaskOutcome.SUCCESS
+//        benchmarkResults.contains("JavaMultiBenchmark.sqrtBenchmark")
+//    }
+//}

@@ -10,8 +10,8 @@ class MultiLanguageSpec {
     @Test
     fun `Execute #language benchmarks`() {
 
-        listOf("groovy", "java", "kotlin"/*, "scala"*/).forEach { language ->
-            val projectDir = File("src/funcTest/resources/$language-project")
+        listOf("Groovy", "Java", "Kotlin"/*, "Scala"*/).forEach { language ->
+            val projectDir = File("src/funcTest/resources/${language.toLowerCase()}-project")
             val pluginClasspathResource = this::class.java.classLoader.getResourceAsStream("plugin-classpath.txt")
                     ?: throw IllegalStateException("Did not find plugin classpath resource, run `testClasses` build task.")
             val pluginClasspath = pluginClasspathResource.reader().readLines().map(::File)
@@ -27,7 +27,7 @@ class MultiLanguageSpec {
             val benchmarkResults = File(projectDir, "build/reports/benchmarks.csv").readText()
 
             assert(taskResult.outcome == TaskOutcome.SUCCESS)
-            benchmarkResults.contains(language + "Benchmark.sqrtBenchmark")
+            assert(language + "Benchmark.sqrtBenchmark" in benchmarkResults)
         }
     }
 }
