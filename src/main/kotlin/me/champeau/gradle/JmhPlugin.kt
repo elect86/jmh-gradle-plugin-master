@@ -38,7 +38,7 @@ open class JmhPlugin : Plugin<Project> {
 
         createJmhSourceSet(project)
 
-        registerBuildListener(project, extension)
+//        registerBuildListener(project, extension)
 
         val path = "$project.buildDir/jmh-generated"
         val jmhGeneratedSourcesDir = project.file("$path-sources")

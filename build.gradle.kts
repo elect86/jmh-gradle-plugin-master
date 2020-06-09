@@ -27,7 +27,8 @@ plugins {
     id("jacoco")
     id("idea")
     id("java-gradle-plugin")
-    kotlin("jvm") version "1.3.31"
+    kotlin("jvm") version "1.3.72"
+//    kotlin("jvm") version "1.4-M2"
     `kotlin-dsl`
     groovy
 }
@@ -43,6 +44,7 @@ kotlinDslPluginOptions.experimentalWarning.set(false)
 
 allprojects {
     repositories {
+        maven ("https://dl.bintray.com/kotlin/kotlin-eap")
         mavenCentral()
         maven("https://oss.sonatype.org/content/repositories/snapshots/")
     }

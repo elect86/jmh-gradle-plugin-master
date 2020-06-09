@@ -12,3 +12,11 @@
  */
 
 rootProject.name = "jmh-gradle-plugin"
+
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+        maven ("https://dl.bintray.com/kotlin/kotlin-eap")
+    }
+}
