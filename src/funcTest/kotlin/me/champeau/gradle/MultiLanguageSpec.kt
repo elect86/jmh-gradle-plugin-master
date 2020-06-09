@@ -12,7 +12,6 @@ class MultiLanguageSpec {
 
         listOf("groovy", "java", "kotlin"/*, "scala"*/).forEach { language ->
             val projectDir = File("src/funcTest/resources/$language-project")
-            println(this::class.java.classLoader.getResource("."))
             val pluginClasspathResource = this::class.java.classLoader.getResourceAsStream("plugin-classpath.txt")
                     ?: throw IllegalStateException("Did not find plugin classpath resource, run `testClasses` build task.")
             val pluginClasspath = pluginClasspathResource.reader().readLines().map(::File)
