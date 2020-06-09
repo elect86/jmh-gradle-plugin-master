@@ -26,7 +26,7 @@ open class JmhPlugin : Plugin<Project> {
         project.plugins.apply(JavaPlugin::class.java)
         val extension = project.extensions.create(Jmh.name, JmhPluginExtension::class.java, project)
         val configuration = project.configurations.create(Jmh.name)
-        val runtimeConfiguration = createJmhRuntimeConfiguration(project, extension)
+        val runtimeClasspathConfiguration = createJmhRuntimeConfiguration(project, extension)
 
         val dependencyHandler = project.dependencies
         configuration.withDependencies {
@@ -53,7 +53,7 @@ open class JmhPlugin : Plugin<Project> {
 //            project.plugins.findPlugin(ShadowPlugin::class.java) != null ->
 //                createShadowJmhJar(project, extension, jmhGeneratedResourcesDir, jmhGeneratedClassesDir, metaInfExcludes, runtimeConfiguration)
 //            else ->
-        createStandardJmhJar(project, extension, metaInfExcludes, jmhGeneratedResourcesDir, jmhGeneratedClassesDir, runtimeConfiguration)
+        createStandardJmhJar(project, extension, metaInfExcludes, jmhGeneratedResourcesDir, jmhGeneratedClassesDir, runtimeClasspathConfiguration)
 //        }
         project.tasks {
             jmh {
@@ -99,7 +99,7 @@ open class JmhPlugin : Plugin<Project> {
     ) = project.tasks.jmhRunBytecodeGenerator {
         group = Jmh.group
         dependsOn("jmhClasses")
-        includeTestsState(extension.includeTests())
+        includeTests(extension.includeTests())
         generatedClassesDir = jmhGeneratedResourcesDir
         generatedSourcesDir = jmhGeneratedSourcesDir
     }
@@ -229,7 +229,7 @@ open class JmhPlugin : Plugin<Project> {
         // our classpath properly
         private fun createJmhRuntimeConfiguration(project: Project, extension: JmhPluginExtension): Configuration =
                 project.configurations {
-                    create(Jmh.runtimeConfiguration) {
+                    create(Jmh.runtimeClasspathConfiguration) {
                         isCanBeConsumed = false
                         isCanBeResolved = true
                         isVisible = false

@@ -24,8 +24,7 @@ import javax.inject.Inject
 //@CompileStatic
 @CacheableTask
 open class JmhBytecodeGeneratorTask : DefaultTask() {
-    val sourceSets = project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets
-    val includeTestsState: Property<Boolean> = project.objects.property(Boolean::class.java).convention(false)
+    private val sourceSets = project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets
 
     @Classpath
     val runtimeClasspath = sourceSets.jmh.runtimeClasspath
@@ -49,14 +48,14 @@ open class JmhBytecodeGeneratorTask : DefaultTask() {
     val generatorType = "default"
 
     @Input
-    fun getIncludeTests(): Property<Boolean> = includeTestsState
+    val includeTests: Property<Boolean> = project.objects.property(Boolean::class.java).convention(false)
 
     @TaskAction
     fun generate() {
         val workerExecutor = services.get(WorkerExecutor::class.java)
         val workQueue = workerExecutor.processIsolation {
             classpath.from(runtimeClasspath.files)
-            if (getIncludeTests()())
+            if (includeTests())
                 classpath.from(testClasses.files + testRuntimeClasspath.files)
         }
         workQueue.submit(JmhBytecodeGeneratorWorker::class.java) {

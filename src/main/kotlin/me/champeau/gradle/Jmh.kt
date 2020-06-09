@@ -10,4 +10,5 @@ object Jmh {
     val jarTaskName = "jmhJar"
     val taskCompileGeneratedClassesName = "jmhCompileGeneratedClasses"
     val runtimeConfiguration = "jmhRuntime"
+    val runtimeClasspathConfiguration = "jmhRuntimeClasspath"
 }

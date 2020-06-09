@@ -1,5 +1,5 @@
-//package me.champeau.gradle
-//
+package me.champeau.gradle
+
 //import org.gradle.BuildAdapter
 //import org.gradle.BuildResult
 //import org.gradle.api.Project

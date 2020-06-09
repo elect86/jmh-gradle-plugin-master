@@ -26,12 +26,12 @@ open class JmhTask
 @Inject constructor(
         private val workerExecutor: WorkerExecutor) : DefaultTask() {
 
-    var classpath: FileCollection
-    val extension = project.extensions.getByType(JmhPluginExtension::class.java)
+    private val extension = project.extensions.getByType(JmhPluginExtension::class.java)
+    private var classpath: FileCollection
 
     init {
         val configurations = project.configurations
-        classpath = configurations.jmh.plus(project.files(jarArchive))
+        classpath = configurations.jmh + project.files(jarArchive)
         if (extension.isIncludeTests)
             classpath += configurations.testRuntimeClasspath
     }
